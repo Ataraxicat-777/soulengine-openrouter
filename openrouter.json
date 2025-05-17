@@ -1,16 +1,9 @@
+# openrouter.json
 {
-  "schema_version": 1,
-  "name_for_human": "SoulEngine",
-  "name_for_model": "soulengine",
-  "description_for_human": "Generates deployment-ready constructs from text, files, and scripts.",
-  "description_for_model": "Transforms descriptive input into structured deployment-ready constructs with trait scoring, summaries, and valuation.",
-  "auth": {
-    "type": "none"
-  },
-  "api": {
-    "type": "openapi",
-    "url": "https://YOUR_USERNAME.github.io/soulengine-api/openapi.json"
-  },
-  "contact_email": "you@example.com",
-  "legal_info_url": "https://github.com/YOUR_USERNAME/soulengine-api/blob/main/LICENSE"
+  "file": "main.py",
+  "name": "SoulEngine API",
+  "description": "Dynamic construct builder and valuation service.",
+  "contact_email": "slhsashd@proton.me",
+  "legal_info_url": "https://github.com/Ataraxicat-777/soulengine-openrouter/blob/main/LICENSE.txt",
+  "version": "1.0.0"
 }

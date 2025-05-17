@@ -1,0 +1,52 @@
+[
+  {
+    "id": "construct_quantum_001",
+    "name": "Quantum Arbiter",
+    "score": 8.4,
+    "usd_value": 352.8,
+    "traits": [
+      "adaptive recursion",
+      "lawful propagation grid",
+      "sovereign imprint lattice"
+    ],
+    "description": "A construct designed to enforce sovereign imprint alignment through recursive lawful propagation. Highly resilient in autonomous agent environments.",
+    "tier": "ultra",
+    "aliases": [
+      "Q-Arbiter",
+      "Quantum Grid Guardian"
+    ],
+    "evolved_from": [
+      "construct_proto_000"
+    ],
+    "timestamp": "2025-05-17T19:57:34.693820",
+    "trait_info": [
+      "Recursion depth: high",
+      "Resilience: adaptive"
+    ]
+  },
+  {
+    "id": "construct_quantum_001",
+    "name": "Quantum Arbiter",
+    "score": 8.4,
+    "usd_value": 352.8,
+    "traits": [
+      "adaptive recursion",
+      "lawful propagation grid",
+      "sovereign imprint lattice"
+    ],
+    "description": "A construct designed to enforce sovereign imprint alignment through recursive lawful propagation. Highly resilient in autonomous agent environments.",
+    "tier": "ultra",
+    "aliases": [
+      "Q-Arbiter",
+      "Quantum Grid Guardian"
+    ],
+    "evolved_from": [
+      "construct_proto_000"
+    ],
+    "timestamp": "2025-05-17T19:58:01.266546",
+    "trait_info": [
+      "Recursion depth: high",
+      "Resilience: adaptive"
+    ]
+  }
+]

@@ -1,6 +1,6 @@
 # deployment_ready_generator.py
 # Purpose: Unified deployment and sync script with full auto-ingestion capabilities and manual entry fallback
-# Enhanced for seamless syncing and export-ready formats
+# Enhanced for seamless syncing and export-ready formats, with USD valuation
 
 import os
 import json
@@ -15,8 +15,10 @@ ARCHIVE_PATH = os.path.join(DESKTOP_DIR, "soulengine_archive.json")
 DEPLOY_PATH = os.path.join(DESKTOP_DIR, "soulengine_deployments.json")
 RENDER_EXPORT_PATH = os.path.join(DESKTOP_DIR, "render_ready.json")
 
+USD_RATE = 42.0  # Adjust this value as needed for dynamic valuation
 
 def ensure_file(path):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
     if not os.path.exists(path):
         with open(path, 'w') as f:
             json.dump([], f)
@@ -52,7 +54,7 @@ def extract_construct_from_text(text):
 def auto_ingest_constructs():
     ingested = []
     for file in os.listdir(BASE):
-        if file.endswith(('.py', '.html', '.txt', '.json')) and not file.startswith("soulengine_"):
+        if file.endswith((".py", ".html", ".txt", ".json")) and not file.startswith("soulengine_"):
             path = os.path.join(BASE, file)
             with open(path, 'r', encoding='utf-8') as f:
                 content = f.read()
@@ -72,15 +74,16 @@ def generate_deployments_from_log():
     deploy_data = []
     for entry in log_data:
         if entry.get("verdict") == "APPROVED":
-            usd_value = round(entry["score"] * 42.0, 2)
+            score = entry["score"]
+            usd_value = round(score * USD_RATE, 2)
             deploy = {
-                "id": entry.get("id", entry["idea"].lower().replace(" ", "_")),
+                "id": entry.get("id", entry["idea"].lower().replace(" ", "_").replace(":", "").replace("\"", "")),
                 "name": entry["idea"],
-                "score": entry["score"],
+                "score": score,
                 "usd_value": usd_value,
                 "traits": entry["traits"],
-                "description": f"Deployment Summary for {entry['idea']}\n- Score: {entry['score']}\n- Estimated Value: ${usd_value} USD\n- Primary Traits: {', '.join(entry['traits'][:5])}\n- Description: This construct is designed for deployment in systems requiring traits such as {', '.join(entry['traits'])}. It is expected to demonstrate advanced resilience, adaptability, and ethically-aligned performance.\n- Recommended Use: Use this construct in experimental governance models, recursive learning frameworks, or intelligent agent mesh systems.",
-                "tier": "ultra" if entry["score"] >= 4.0 else "standard",
+                "description": f"Deployment Summary for {entry['idea']}\n- Score: {score}\n- Estimated Value: ${usd_value} USD\n- Primary Traits: {', '.join(entry['traits'][:5])}\n- Description: This construct is designed for deployment in systems requiring traits such as {', '.join(entry['traits'])}. It is expected to demonstrate advanced resilience, adaptability, and ethically-aligned performance.\n- Recommended Use: Use this construct in experimental governance models, recursive learning frameworks, or intelligent agent mesh systems.",
+                "tier": "ultra" if score >= 4.0 else "standard",
                 "aliases": [entry["idea"][:40] + "..."],
                 "evolved_from": entry.get("evolved_from", []),
                 "timestamp": entry.get("timestamp"),
@@ -109,25 +112,30 @@ if __name__ == "__main__":
     choice = input("Mode (file | manual | all): ").strip().lower()
 
     if choice == "file":
-        target_file = input("Enter file to ingest: ").strip()
-        path = os.path.join(BASE, target_file)
-        if not os.path.isfile(path):
-            print(f"❌ File not found: {target_file}")
+        target_file = input("Enter file to ingest (or press Enter to scan all): ").strip()
+        constructs = []
+        if target_file:
+            path = os.path.join(BASE, target_file)
+            if not os.path.isfile(path):
+                print(f"❌ File not found: {target_file}")
+            else:
+                try:
+                    with open(path, 'r', encoding='utf-8') as f:
+                        content = f.read()
+                        if path.endswith(".json"):
+                            data = json.loads(content)
+                            constructs = data if isinstance(data, list) else [data]
+                        else:
+                            constructs = [extract_construct_from_text(content)]
+                except Exception as e:
+                    print(f"❌ Failed to process {target_file}: {e}")
         else:
-            constructs = []
-            try:
-                with open(path, 'r', encoding='utf-8') as f:
-                    content = f.read()
-                    if path.endswith(".json"):
-                        data = json.loads(content)
-                        constructs = data if isinstance(data, list) else [data]
-                    else:
-                        constructs = [extract_construct_from_text(content)]
-                log_data.extend(constructs)
-                write_json(LOG_PATH, log_data)
-                print(f"✅ Imported {len(constructs)} construct(s) from {target_file}.")
-            except Exception as e:
-                print(f"❌ Failed to process {target_file}: {e}")
+            constructs = auto_ingest_constructs()
+
+        if constructs:
+            log_data.extend(constructs)
+            write_json(LOG_PATH, log_data)
+            print(f"✅ Imported {len(constructs)} construct(s).")
 
     elif choice == "manual":
         idea = input("Enter idea name: ").strip()

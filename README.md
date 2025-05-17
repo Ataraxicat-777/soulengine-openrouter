@@ -1,16 +1,30 @@
+# README.md
+
 # SoulEngine API
 
-**SoulEngine** is a sovereign, modular construct generation engine built for recursive learning systems, ethical mesh governance, and future-aligned AI deployments.
+The **SoulEngine API** is a powerful and extensible FastAPI-based microservice that allows dynamic construction, scoring, valuation, and trait mapping of intelligent constructs for simulated deployment environments.
 
 ## Features
-
-- Manual and file-based construct ingestion
-- Automated deployment generation with trait scoring
-- USD valuation estimates per deployment
-- Ready for OpenRouter + Hugging Face integration
-- Output includes human-readable summaries and JSON-structured deployments
+- FastAPI-powered endpoints for CRUD operations
+- Automatic scoring and valuation
+- JSON-based deployment storage
+- CORS enabled
+- Prepares constructs for Render and OpenRouter
 
 ## Getting Started
 
+### Install dependencies:
 ```bash
-python deployment_ready_generator.py
+pip install -r requirements.txt
+```
+
+### Run the app:
+```bash
+uvicorn main:app --reload
+```
+
+## Deployment
+Deployable to Render or any Docker-enabled platform.
+
+## License
+MIT
