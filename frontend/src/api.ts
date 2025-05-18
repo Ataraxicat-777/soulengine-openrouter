@@ -12,7 +12,6 @@ export async function sendChatMessage(message: string) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ message }),
   });
-  if (!res.ok) throw new Error("Failed to send chat message.");
   return await res.json();
 }
 
