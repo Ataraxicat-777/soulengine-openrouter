@@ -1,0 +1,30 @@
+# === Core Web Framework ===
+fastapi>=0.110.0
+uvicorn[standard]>=0.29.0
+
+# === Middleware & Utilities ===
+python-dotenv>=1.0.1
+pydantic>=2.6.3
+
+# === AI & API Integration ===
+openai>=1.79.0
+httpx>=0.28.0
+
+# === Security ===
+starlette>=0.37.2
+aiofiles>=23.2.1
+
+# === CORS Support ===
+fastapi[all]>=0.110.0
+
+# === Optional but Recommended ===
+orjson>=3.9.10               # Fast JSON parsing
+loguru>=0.7.2                # Advanced logging
+email-validator>=2.1.0       # For future user/email validation
+
+# === Dev Tools ===
+pytest>=8.1.1
+httpx[cli]>=0.28.0
+pytest-asyncio>=0.23.6
+black>=24.3.0
+isort>=5.13.2

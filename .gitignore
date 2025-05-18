@@ -1,0 +1,30 @@
+# Python
+__pycache__
+.py[cod]
+.egg-info
+.env
+.sqlite3
+.venv
+venv
+
+# Node.js
+node_modules
+dist
+build
+.env.local
+.env.production
+.env.development
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+.log
+
+# IDE configs
+.vscode
+.idea
+
+# Output
+.out
