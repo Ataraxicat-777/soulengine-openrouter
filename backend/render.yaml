@@ -3,7 +3,7 @@ services:
     name: soulengine-backend
     env: docker
     plan: free
-    region: oregon
+    region: ohio
     branch: main
     repo: https://github.com/Ataraxicat-777/soulengine-openrouter
     autoDeploy: true
