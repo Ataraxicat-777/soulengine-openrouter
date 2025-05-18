@@ -7,3 +7,15 @@ services:
     branch: main
     repo: https://github.com/Ataraxicat-777/soulengine-openrouter
     autoDeploy: true
+
+  - type: web
+    name: soulengine-frontend
+    env: static
+    buildCommand: npm run build
+    publishDirectory: dist
+    rootDirectory: frontend
+    plan: free
+    region: ohio
+    branch: main
+    repo: https://github.com/Ataraxicat-777/soulengine-openrouter
+    autoDeploy: true
