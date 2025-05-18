@@ -25,8 +25,7 @@
     <!-- 📦 PWA Manifest -->
     <link rel="manifest" href="/manifest.json" />
 
-    <!-- 🚀 Performance + Fonts -->
-    <link rel="preload" href="/src/main.tsx" as="script" />
+    <!-- 🚀 Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet" />
     <meta name="robots" content="index, follow" />
   </head>
@@ -96,7 +95,7 @@
       animate();
     </script>
 
-    <!-- 💻 Main App -->
-    <script type="module" src="/src/main.tsx"></script>
+    <!-- 💻 Main App Entrypoint - will be injected by Vite build -->
+    <script type="module" src="/assets/index.js"></script>
   </body>
 </html>
