@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: soulengine-openrouter
+    env: docker
+    plan: free
+    region: oregon
+    branch: main
+    repo: https://github.com/Ataraxicat-777/soulengine-openrouter
+    dockerfilePath: backend/Dockerfile
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: DATA_PATH
+        value: soulengine_deployments.json
