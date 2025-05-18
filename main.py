@@ -26,10 +26,9 @@ class SecureHeadersMiddleware(BaseHTTPMiddleware):
         response.headers["X-Content-Type-Options"] = "nosniff"
         return response
 
-app.add_middleware(SecureHeadersMiddleware)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],  # Or restrict to your frontend domain
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -61,6 +60,10 @@ def save_constructs(data):
         json.dump(data, f, indent=2)
 
 # --------- API Routes ---------
+@app.get("/")
+def root():
+    return {"message": "SoulEngine backend is alive."}
+
 @app.get("/health")
 def health_check():
     return {"status": "ok", "message": "SoulEngine API running."}
