@@ -60,6 +60,10 @@ def save_constructs(data):
         json.dump(data, f, indent=2)
 
 # --------- API Routes ---------
+@app.get("/favicon.ico")
+def favicon():
+    return FileResponse(os.path.join("static", "favicon.ico"))
+
 @app.get("/")
 def root():
     return {"message": "SoulEngine backend is alive."}

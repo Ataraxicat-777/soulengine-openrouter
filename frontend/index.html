@@ -1,62 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Core Meta -->
+    <!-- 🧠 Meta Basics -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <!-- Title & Description -->
+    <!-- 🔥 Title & Description -->
     <title>SoulEngine Mandala</title>
-    <meta name="description" content="Recursive Construct Mandala UI for visualizing adaptive traits" />
+    <meta name="description" content="Recursive Construct Mandala UI for visualizing adaptive traits and symbolic graph states." />
+    <meta name="theme-color" content="#0f172a" />
 
-    <!-- Open Graph Meta -->
+    <!-- 🧠 Open Graph / Social Embed -->
     <meta property="og:title" content="SoulEngine UI" />
     <meta property="og:description" content="Recursive Construct Mandala in motion." />
     <meta property="og:image" content="/logo.png" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://soulengine-ui.onrender.com" />
+    <meta property="og:url" content="https://soulengine-openrouter-1.onrender.com" />
 
-    <!-- Icons -->
-    <link rel="icon" type="image/png" href="/favicon.ico" />
-    <link rel="apple-touch-icon" href="/logo.png" />
+    <!-- 📱 Icons -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/logo.png" sizes="180x180" />
 
-    <!-- Manifest for PWA -->
+    <!-- 📦 PWA Manifest -->
     <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#0f172a" />
 
-    <!-- Preloads & Fonts -->
+    <!-- 🚀 Performance + Fonts -->
     <link rel="preload" href="/src/main.tsx" as="script" />
-    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&display=swap" rel="stylesheet" />
-
-    <!-- Robots -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet" />
     <meta name="robots" content="index, follow" />
   </head>
 
-  <body class="bg-zinc-900 text-white font-sans">
+  <body class="font-['Orbitron'] bg-black text-white overflow-x-hidden">
+    <!-- ⚡️ Splash -->
     <div id="splash" class="fixed inset-0 flex items-center justify-center bg-black z-50">
       <img src="/logo.png" alt="SoulEngine Logo" class="animate-pulse w-24 h-24" />
     </div>
 
-    <div id="root" class="opacity-0"></div>
+    <!-- 🌌 Background Animation -->
+    <canvas id="bg-shader" class="fixed inset-0 z-0 pointer-events-none"></canvas>
 
+    <!-- 🔮 App Mount Point -->
+    <div id="root" class="opacity-0 transition-opacity duration-300 ease-in"></div>
+
+    <!-- 🔧 App Startup Logic -->
     <script>
-      // Remove splash screen after app loads
       window.addEventListener('load', () => {
         const splash = document.getElementById('splash');
         const root = document.getElementById('root');
         if (splash) splash.style.display = 'none';
         if (root) root.classList.remove('opacity-0');
+
+        // Install Prompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+          e.preventDefault();
+          const deferredPrompt = e;
+          const installBtn = document.createElement('button');
+          installBtn.innerText = 'Install SoulEngine';
+          installBtn.className = 'fixed bottom-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-xl shadow-lg z-50';
+          installBtn.onclick = () => {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then(() => installBtn.remove());
+          };
+          document.body.appendChild(installBtn);
+        });
       });
 
       // Register Service Worker
       if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js').catch(console.error);
-        });
+        navigator.serviceWorker.register('/sw.js').catch(console.error);
       }
+
+      // Animate Stars
+      const canvas = document.getElementById('bg-shader');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      let stars = Array.from({ length: 100 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.5,
+      }));
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        stars.forEach(star => {
+          star.y += 0.3;
+          if (star.y > canvas.height) star.y = 0;
+          ctx.beginPath();
+          ctx.arc(star.x, star.y, star.r, 0, 2 * Math.PI);
+          ctx.fillStyle = 'rgba(255,255,255,0.6)';
+          ctx.fill();
+        });
+        requestAnimationFrame(animate);
+      }
+      animate();
     </script>
 
+    <!-- 💻 Main App -->
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
