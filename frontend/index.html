@@ -1,16 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Core Meta -->
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta property="og:title" content="SoulEngine UI" />
-    <meta property="og:description" content="Recursive Construct Mandala" />
-    <meta property="og:image" content="/logo.png" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Title & Description -->
     <title>SoulEngine Mandala</title>
+    <meta name="description" content="Recursive Construct Mandala UI for visualizing adaptive traits" />
+
+    <!-- Open Graph Meta -->
+    <meta property="og:title" content="SoulEngine UI" />
+    <meta property="og:description" content="Recursive Construct Mandala in motion." />
+    <meta property="og:image" content="/logo.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://soulengine-ui.onrender.com" />
+
+    <!-- Icons -->
+    <link rel="icon" type="image/png" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/logo.png" />
+
+    <!-- Manifest for PWA -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#0f172a" />
+
+    <!-- Preloads & Fonts -->
+    <link rel="preload" href="/src/main.tsx" as="script" />
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&display=swap" rel="stylesheet" />
+
+    <!-- Robots -->
+    <meta name="robots" content="index, follow" />
   </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/App.tsx"></script>
+
+  <body class="bg-zinc-900 text-white font-sans">
+    <div id="splash" class="fixed inset-0 flex items-center justify-center bg-black z-50">
+      <img src="/logo.png" alt="SoulEngine Logo" class="animate-pulse w-24 h-24" />
+    </div>
+
+    <div id="root" class="opacity-0"></div>
+
+    <script>
+      // Remove splash screen after app loads
+      window.addEventListener('load', () => {
+        const splash = document.getElementById('splash');
+        const root = document.getElementById('root');
+        if (splash) splash.style.display = 'none';
+        if (root) root.classList.remove('opacity-0');
+      });
+
+      // Register Service Worker
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(console.error);
+        });
+      }
+    </script>
+
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

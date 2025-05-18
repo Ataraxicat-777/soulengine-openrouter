@@ -1,13 +1,13 @@
-// frontend/src/api.ts
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 export async function fetchConstructs() {
-  const res = await fetch("http://localhost:8000/constructs");
+  const res = await fetch(`${BASE_URL}/constructs`);
   if (!res.ok) throw new Error("Failed to fetch constructs.");
   return await res.json();
 }
 
 export async function sendChatMessage(message: string) {
-  const res = await fetch("http://localhost:8000/chat", {
+  const res = await fetch(`${BASE_URL}/chat`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ message }),
@@ -17,7 +17,7 @@ export async function sendChatMessage(message: string) {
 }
 
 export async function evolveConstruct(id: string) {
-  const res = await fetch("http://localhost:8000/evolve", {
+  const res = await fetch(`${BASE_URL}/evolve`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ id }),
@@ -27,7 +27,7 @@ export async function evolveConstruct(id: string) {
 }
 
 export async function generateConstruct() {
-  const res = await fetch("http://localhost:8000/generate", {
+  const res = await fetch(`${BASE_URL}/generate`, {
     method: "POST",
   });
   if (!res.ok) throw new Error("Failed to generate construct.");
