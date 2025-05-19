@@ -2,14 +2,14 @@ import os
 import json
 import random
 from fastapi import FastAPI, Request, HTTPException
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
 from pydantic import BaseModel
 from dotenv import load_dotenv
 import openai
 
-# Load environment variables from .env
+# Load environment variables
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -17,22 +17,28 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 DATA_PATH = os.getenv("DATA_PATH", "soulengine_deployments.json")
 
 # Initialize FastAPI app
-app = FastAPI()
+app = FastAPI(title="SoulEngine API", version="1.0.0")
 
 # --------- Middleware ---------
 class SecureHeadersMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         response = await call_next(request)
         response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["X-Frame-Options"] = "DENY"
+        response.headers["X-XSS-Protection"] = "1; mode=block"
         return response
 
+# Add CORS + secure headers
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Or restrict to your frontend domain
+    allow_origins=[
+        "https://soulengine-openrouter-1.onrender.com"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(SecureHeadersMiddleware)
 
 # --------- Pydantic Models ---------
 class Message(BaseModel):
@@ -47,7 +53,7 @@ class Construct(BaseModel):
     tier: str
     related_constructs: list[dict]
 
-# --------- Helper Functions ---------
+# --------- Utility Functions ---------
 def get_constructs():
     try:
         with open(DATA_PATH, "r") as f:
@@ -59,7 +65,7 @@ def save_constructs(data):
     with open(DATA_PATH, "w") as f:
         json.dump(data, f, indent=2)
 
-# --------- API Routes ---------
+# --------- API Endpoints ---------
 @app.get("/favicon.ico")
 def favicon():
     return FileResponse(os.path.join("static", "favicon.ico"))
